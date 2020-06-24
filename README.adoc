@@ -1,0 +1,4 @@
+= csharp.kak
+Parasrah <git@parasrah.com>
+
+This plugin provides basic C# syntax highlighting and indentation, taking advantage of the simliarities with the `c-family` rc files.
