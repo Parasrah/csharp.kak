@@ -23,7 +23,6 @@ hook global WinSetOption filetype=csharp %<
     hook -group "csharp-indent" window InsertChar \n csharp-indent-on-newline
     hook -group "csharp-indent" window InsertChar \{ csharp-indent-on-opening-curly-brace
     hook -group "csharp-indent" window InsertChar \} csharp-indent-on-closing-curly-brace
-    hook -group "csharp-insert" window InsertChar \} csharp-insert-on-closing-curly-brace
 
     hook -once -always window WinSetOption filetype=.* %{ remove-hooks window csharp-.+ }
 >
@@ -45,8 +44,8 @@ add-highlighter "shared/csharp/double_string" region '"'  (?<!\\)(\\\\)*"       
 add-highlighter "shared/csharp/comment_line"  region //   '$'                     fill comment
 add-highlighter "shared/csharp/comment"       region /\*  \*/                     fill comment
 add-highlighter shared/csharp/code/ regex %{\b(this|true|false|null)\b} 0:value
-add-highlighter shared/csharp/code/ regex "\b(void|dynamic|string|int|char|decimal|boolean|double|float)\b" 0:type
-add-highlighter shared/csharp/code/ regex "\b(while|for|if|else|do|static|switch|case|default|class|interface|enum|break|continue|return|async|await|using|namespace|try|catch|throw|new|extends|implements|throws|instanceof|finally|as)\b" 0:keyword
+add-highlighter shared/csharp/code/ regex "\b(var|void|dynamic|string|int|char|decimal|boolean|double|float|List|IList|Enumerable|IEnumerable)\b" 0:type
+add-highlighter shared/csharp/code/ regex "\b(while|for|if|else|do|static|readonly|switch|case|default|class|interface|enum|break|continue|return|async|await|using|namespace|try|catch|throw|new|extends|implements|throws|instanceof|finally|as|get|set)\b" 0:keyword
 add-highlighter shared/csharp/code/ regex "\b(final|public|protected|private|abstract)\b" 0:attribute
 
 # Commands
@@ -114,11 +113,6 @@ define-command -hidden csharp-indent-on-closing-curly-brace %[
         # otherwise align with open curly brace
         execute-keys -itersel -draft <a-h><a-:><a-k>^\h+\}$<ret>hm<a-S>1<a-&>
     ] catch %[]
-]
-
-define-command -hidden csharp-insert-on-closing-curly-brace %[
-    # add a semicolon after a closing brace if part of a class, union or struct definition
-    try %[ execute-keys -itersel -draft hm<a-x>B<a-x><a-k>\A\h*(class|struct|union|enum)<ret> '<a-;>;i;<esc>' ]
 ]
 
 define-command -hidden csharp-insert-on-newline %[ evaluate-commands -itersel -draft %[
