@@ -19,6 +19,11 @@ hook global BufCreate .*[.](sln) %{
 hook global WinSetOption filetype=csharp %<
     require-module csharp
 
+    set-option window comment_line '//'
+    set-option window comment_block_begin '/*'
+    set-option window comment_block_end '*/'
+    set-option window makecmd 'dotnet build'
+
     hook -group "csharp-insert" window InsertChar \n csharp-insert-on-newline
     hook -group "csharp-indent" window InsertChar \n csharp-indent-on-newline
     hook -group "csharp-indent" window InsertChar \{ csharp-indent-on-opening-curly-brace
